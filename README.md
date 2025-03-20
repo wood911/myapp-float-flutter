@@ -7,6 +7,8 @@ https://im-app.obs.qdtg.com/app/Android/20250319173746/app-debug.apk
 
 ![image](https://github.com/user-attachments/assets/2c7a442e-b826-4ba4-93e1-f470a60448e6)
 
+[观看视频](assets/Screenrecorder.mp4)
+
 
 ## Getting Started
 
