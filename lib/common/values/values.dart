@@ -13,6 +13,7 @@ class Values {
   static const String cmdSaveImage = 'save_image';
   static const String cmdScreenshot = 'screenshot';
   static const String cmdGoBack = 'go_back';
+  static const String cmdSwitchTask = 'switch_task';
 
   static const int menuCount = 8;
 

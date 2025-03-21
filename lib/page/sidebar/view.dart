@@ -54,7 +54,7 @@ class SidebarOverlay extends GetView<OverlayController> {
             children: [
               IconButton(icon: Icon(Icons.home, color: Colors.white), onPressed: controller.backHome),
               IconButton(icon: Icon(Icons.arrow_back, color: Colors.white), onPressed: controller.goBack),
-              IconButton(icon: Icon(Icons.menu, color: Colors.white), onPressed: controller.appSwitch),
+              IconButton(icon: Icon(Icons.menu, color: Colors.white), onPressed: controller.switchTask),
               IconButton(icon: Icon(Icons.draw, color: Colors.white), onPressed: controller.showDrawingPad),
               IconButton(icon: Icon(Icons.volume_up, color: Colors.white), onPressed: controller.showVolumeSlider),
               IconButton(icon: Icon(Icons.photo, color: Colors.white), onPressed: controller.captureScreen),

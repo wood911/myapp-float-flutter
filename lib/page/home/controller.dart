@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_accessibility_service/constants.dart';
+import 'package:flutter_accessibility_service/flutter_accessibility_service.dart';
 import 'package:flutter_native_screenshot/flutter_native_screenshot.dart';
 import 'package:flutter_overlay_window/flutter_overlay_window.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -80,10 +82,21 @@ class HomeController extends GetxController with WidgetsBindingObserver {
         foreground
             ? MoveToBackground.moveTaskToBack()
             : MoveToBackground.bringAppToFront();
+      } else if (cmd == Values.cmdSwitchTask) {
+        _cmdAccessibility(GlobalAction.globalActionRecents);
       }
     });
   }
 
+  _cmdAccessibility(GlobalAction action) async {
+    bool status = await FlutterAccessibilityService.isAccessibilityPermissionEnabled();
+    if (!status) {
+      status = await FlutterAccessibilityService.requestAccessibilityPermission();
+    }
+    if (status) {
+      await FlutterAccessibilityService.performGlobalAction(action);
+    }
+  }
   _screenShare() async {
     if (!foreground) {
       Log.w('Android 11 及以上 的新安全限制，导致应用不能在后台直接请求权限。');
@@ -101,23 +114,8 @@ class HomeController extends GetxController with WidgetsBindingObserver {
       // 应用在前台用native screenshot
       _nativeScreenshot();
     } else {
-      // 应用在后台，启动屏幕共享截图
-      final ScreenShareController controller = Get.find();
-      Uint8List? data;
-      if (controller.inCalling.value) { // 屏幕共享中，截图
-        data = await controller.captureFrame();
-      } else { // 不在屏幕共享中，开启屏幕共享
-        final res = await controller.startScreenShare();
-        if (res) {
-          data = await controller.captureFrame();
-        }
-        controller.stopScreenShare();
-      }
-      if (data != null) {
-        _saveImage(data);
-      } else {
-        Log.e('屏幕共享截图 data = null');
-      }
+      // 应用在后台，无法请求权限，无法截图，需要通过AccessibilityService
+      _cmdAccessibility(GlobalAction.globalActionTakeScreenshot);
     }
   }
   _nativeScreenshot() async {

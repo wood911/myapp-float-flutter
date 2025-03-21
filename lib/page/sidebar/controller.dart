@@ -49,8 +49,8 @@ class OverlayController extends GetxController {
   backHome() {
     MoveToBackground.goHome();
   }
-  appSwitch() {
-    MoveToBackground.appSwitch();
+  switchTask() {
+    sendData({Values.cmdOverlayKey: Values.cmdSwitchTask});
   }
   goBack() {
     sendData({Values.cmdOverlayKey: Values.cmdGoBack});
