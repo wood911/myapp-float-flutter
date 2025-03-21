@@ -114,8 +114,21 @@ class HomeController extends GetxController with WidgetsBindingObserver {
       // 应用在前台用native screenshot
       _nativeScreenshot();
     } else {
-      // 应用在后台，无法请求权限，无法截图，需要通过AccessibilityService
-      _cmdAccessibility(GlobalAction.globalActionTakeScreenshot);
+      final ScreenShareController controller = Get.find();
+      if (controller.inCalling.value) { // 屏幕共享中，截图
+        Uint8List? data = await controller.captureFrame();
+        if (data != null) {
+          _saveImage(data);
+        }
+      } else {
+        // 应用在后台，未开启屏幕共享，需要通过AccessibilityService
+        _cmdAccessibility(GlobalAction.globalActionTakeScreenshot);
+        // final res = await controller.startScreenShare();
+        // if (res) {
+        //   data = await controller.captureFrame();
+        // }
+        // controller.stopScreenShare();
+      }
     }
   }
   _nativeScreenshot() async {
