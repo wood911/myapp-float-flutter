@@ -21,7 +21,12 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   final _receivePort = ReceivePort();
   SendPort? homePort;
   var messageFromOverlay = ''.obs;
+  /// resumed	应用回到前台，可以正常交互	继续播放视频、恢复数据同步
+  /// inactive	短暂失去焦点，但可能仍然可见	iOS: 接听电话/多任务切换
+  /// paused	应用进入后台，不可见	停止动画、暂停音乐
+  /// detached	应用即将被销毁，但仍占用资源	清理资源，释放内存
   AppLifecycleState appState = AppLifecycleState.resumed;
+  bool get foreground => [AppLifecycleState.resumed, AppLifecycleState.inactive].contains(appState);
 
   final options = {
     'captureFrame'.tr: AppRoutes.captureFrame,
@@ -72,7 +77,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
       } else if (cmd == Values.cmdScreenshot) {
         _takeScreenshot();
       } else if (cmd == Values.cmdGoBack) {
-        appState == AppLifecycleState.resumed
+        foreground
             ? MoveToBackground.moveTaskToBack()
             : MoveToBackground.bringAppToFront();
       }
@@ -80,7 +85,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
   }
 
   _screenShare() async {
-    if (appState != AppLifecycleState.resumed) {
+    if (!foreground) {
       Log.w('Android 11 及以上 的新安全限制，导致应用不能在后台直接请求权限。');
       MoveToBackground.bringAppToFront();
       await Future.delayed(const Duration(milliseconds: 500));
@@ -92,7 +97,7 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     _syncRecordStatus(res);
   }
   _takeScreenshot() async {
-    if (appState == AppLifecycleState.resumed) {
+    if (foreground) {
       // 应用在前台用native screenshot
       _nativeScreenshot();
     } else {

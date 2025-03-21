@@ -11,6 +11,7 @@ class MoveToBackground {
 
   /// Calls the platform-specific function to send the app to the background
   static Future<void> moveTaskToBack() async {
+    print('moveTaskToBack');
     await _channel.invokeMethod('moveTaskToBack');
   }
 
@@ -23,6 +24,7 @@ class MoveToBackground {
   }
 
   static Future<void> bringAppToFront() async {
+    print('bringAppToFront');
     await _channel.invokeMethod('bringAppToFront');
   }
 }
