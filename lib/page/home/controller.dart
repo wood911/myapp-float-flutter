@@ -71,6 +71,10 @@ class HomeController extends GetxController with WidgetsBindingObserver {
         }
       } else if (cmd == Values.cmdScreenshot) {
         _takeScreenshot();
+      } else if (cmd == Values.cmdGoBack) {
+        appState == AppLifecycleState.resumed
+            ? MoveToBackground.moveTaskToBack()
+            : MoveToBackground.bringAppToFront();
       }
     });
   }
@@ -194,11 +198,11 @@ class HomeController extends GetxController with WidgetsBindingObserver {
         enableDrag: false,
         overlayTitle: "悬浮窗口",
         overlayContent: 'Overlay Enabled',
-        flag: OverlayFlag.defaultFlag,
+        flag: OverlayFlag.focusPointer,
         visibility: NotificationVisibility.visibilityPublic,
         positionGravity: PositionGravity.auto,
         width: width ?? (50 * Get.pixelRatio).toInt(),
-        height: height ?? (50 * 8 * Get.pixelRatio).toInt(),
+        height: height ?? (50 * Values.menuCount * Get.pixelRatio).toInt(),
         startPosition: OverlayPosition(0, 0),
       );
     }

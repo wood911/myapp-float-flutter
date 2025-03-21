@@ -8,6 +8,7 @@ import 'package:myapp/page/sidebar/view.dart';
 
 import 'common/routers/pages.dart';
 import 'common/store/store.dart';
+import 'common/values/values.dart';
 
 void main() {
   Get.put<UserStore>(UserStore());
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    App.init(context);
     return GetMaterialApp(
       locale: Get.deviceLocale,
       fallbackLocale: TranslationService.fallbackLocale,

@@ -1,8 +1,6 @@
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_overlay_window/flutter_overlay_window.dart';
 import 'package:get/get.dart';
@@ -55,32 +53,31 @@ class OverlayController extends GetxController {
     MoveToBackground.appSwitch();
   }
   goBack() {
-    SystemNavigator.pop();
-    MoveToBackground.moveTaskToBack();
+    sendData({Values.cmdOverlayKey: Values.cmdGoBack});
   }
-  showDrawingPad(BuildContext context) {
+  showDrawingPad() {
     if (showDrawing.value) {
-      FlutterOverlayWindow.resizeOverlay(50, 50 * 8, false);
+      FlutterOverlayWindow.resizeOverlay(50, 50 * Values.menuCount, false);
     } else {
-      FlutterOverlayWindow.resizeOverlay(WindowSize.fullCover, WindowSize.matchParent, false);
+      // FlutterOverlayWindow.resizeOverlay(WindowSize.fullCover, WindowSize.matchParent, false);
+      FlutterOverlayWindow.resizeOverlay(WindowSize.fullCover, App.height.toInt() + 20, false);
+      FlutterOverlayWindow.moveOverlay(OverlayPosition(0, 5));
     }
     showVolume.value = false;
     showDrawing.value = !showDrawing.value;
   }
-  showVolumeSlider(BuildContext context) async {
+  showVolumeSlider() async {
     if (showVolume.value) {
-      FlutterOverlayWindow.resizeOverlay(50, 50 * 8, false);
+      FlutterOverlayWindow.resizeOverlay(50, 50 * Values.menuCount, false);
     } else {
-      FlutterOverlayWindow.resizeOverlay(WindowSize.fullCover, 50 * 8, false);
+      FlutterOverlayWindow.resizeOverlay(WindowSize.fullCover, 50 * Values.menuCount, false);
     }
     volume = await VolumeControl.volume;
     Log.d('system volume:$volume');
-    showDrawing.value = false;
     showVolume.value = !showVolume.value;
   }
   startScreenRecording() async {
     showVolume.value = false;
-    showDrawing.value = false;
     sendData({Values.cmdOverlayKey: Values.cmdScreenShare});
   }
   captureScreen() async {
