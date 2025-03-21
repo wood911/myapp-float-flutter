@@ -3,7 +3,7 @@
 flutter悬浮窗口demo，可以在后台屏幕共享、截屏、绘制图形等
 
 demo apk:
-https://im-app.obs.qdtg.com/app/Android/20250319173746/app-debug.apk
+https://im-app.obs.qdtg.com/app/Android/20250321152423/app-debug.apk
 
 ![image](https://github.com/user-attachments/assets/2c7a442e-b826-4ba4-93e1-f470a60448e6)
 
